@@ -6,19 +6,18 @@ class Square extends React.Component {
 		super(props)
 		this.handleClick = this.handleClick.bind(this)
 	}
-	handleClick(value, clickAble) {
+	handleClick() {
+		const {
+			value,
+			clickAble
+		} = this.props
 		if(clickAble) this.props.handleSquareClick(value)
 	}
 
 	render() {
-		const {
-			value,
-			player,
-			clickAble
-		} = this.props
 		return (
-			<button className="square" onClick={() => this.handleClick(value, clickAble)}>
-				{player}
+			<button className="square" onClick={this.handleClick}>
+				{this.props.player}
 			</button>
 		)
 	}
@@ -32,7 +31,7 @@ class Board extends React.Component {
 		const {
 			squares
 		} = this.props
-		const clickAble = Object.keys(squares).indexOf(i) < 0
+		const clickAble = Object.keys(squares).indexOf(i.toString()) < 0
 		return <Square value={i} player={squares[i] ? squares[i] : ''} clickAble={clickAble} handleSquareClick={this.props.onSquareClick}/>
 	}
 	render() {
@@ -70,7 +69,6 @@ class Game extends React.Component {
 		this.calculateWinner = this.calculateWinner.bind(this)
 	}
 	handleSquareClick(pos) {
-		console.log(pos)
 		let neoSquares = Object.assign(this.state.squares, {})
 		neoSquares[pos] = this.state.player
 		this.setState({squares: neoSquares})
@@ -81,7 +79,6 @@ class Game extends React.Component {
 			const nextPlayer = this.state.player === 'x' ? 'o' : 'x'
 			this.setState({player: nextPlayer})
 		}
-		console.log(neoSquares)
 	}
 	calculateWinner(squares) {
 		const lines = [
